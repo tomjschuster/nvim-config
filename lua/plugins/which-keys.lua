@@ -1,4 +1,4 @@
- -- Show pending keybinds.
+-- Show pending keybinds.
 return {
   {
     'folke/which-key.nvim',
