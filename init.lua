@@ -12,6 +12,9 @@ vim.keymap.set('i', '<C-e>', '<End>', { desc = 'Go to the end of the line' })
 vim.keymap.set('n', 't', '<Cmd>vsplit | terminal<CR>', { desc = 'Terminal' })
 vim.keymap.set('n', '<S-T>', '<Cmd>split | terminal<CR>', { desc = 'Terminal (horizontal)' })
 
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
 
 vim.g.have_nerd_font = true
 
