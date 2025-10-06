@@ -17,11 +17,12 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  'NMAC427/guess-indent.nvim',
-  require 'plugins.gitsigns',
-  require 'plugins.neo-tree',
-  require 'plugins.which-keys',
-  require 'colors.cobalt2',
-  install = { colorscheme = { 'habamax' } },
+  spec = { 
+    require 'colors.cobalt2',
+    'NMAC427/guess-indent.nvim',
+    'cohama/lexima.vim',
+    { import = "plugins" }
+  },
+  install = { colorscheme = { 'cobalt2' } },
   checker = { enabled = true },
 })
