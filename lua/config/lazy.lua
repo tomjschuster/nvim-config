@@ -21,6 +21,7 @@ require('lazy').setup({
   require 'plugins.gitsigns',
   require 'plugins.neo-tree',
   require 'plugins.which-keys',
+  require 'colors.cobalt2',
   install = { colorscheme = { 'habamax' } },
   checker = { enabled = true },
 })
