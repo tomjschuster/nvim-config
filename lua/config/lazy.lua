@@ -18,7 +18,16 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
   spec = {
-    require 'colors.cobalt2',
+    --    require 'colors.cobalt2',
+    {
+      'rafamadriz/neon',
+      priority = 1000,
+      lazy = false,
+      config = function(_, opts)
+        vim.cmd [[colorscheme neon]]
+      end,
+    },
+
     'NMAC427/guess-indent.nvim',
     'cohama/lexima.vim',
     { import = 'plugins' },

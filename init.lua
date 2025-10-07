@@ -1,6 +1,9 @@
 vim.g.mapleader = ','
 vim.g.maplocalleader = ','
 
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode' })
 vim.keymap.set('t', 'jk', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
@@ -29,6 +32,10 @@ vim.o.mouse = 'a'
 vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
 end)
+
+vim.keymap.set('n', '<leader>cp', function()
+  vim.fn.setreg('+', vim.fn.expand '%:p')
+end, { noremap = true, silent = true, desc = 'Copy current buffer path' })
 
 vim.o.breakindent = true
 vim.o.undofile = true
