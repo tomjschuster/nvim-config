@@ -221,7 +221,7 @@ return {
         --
         expert = {
           cmd = { 'expert' },
-          completion = { autocomplete = false },
+          --  completion = { autocomplete = false },
           root_markers = { 'mix.exs', '.git' },
           filetypes = { 'elixir', 'eelixir', 'heex' },
         },
