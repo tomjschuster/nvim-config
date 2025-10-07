@@ -21,10 +21,12 @@ require('lazy').setup {
     --    require 'colors.cobalt2',
     {
       'rafamadriz/neon',
+      --      dir = '~/.local/share/nvim/lazy/neon/',
       priority = 1000,
       lazy = false,
-      config = function(_, opts)
-        vim.cmd [[colorscheme neon]]
+      config = function(neon, opts)
+        vim.g.neon_overrides = { SpecialChar = { fg = require('neon.colors').purple } }
+        require('neon').colorscheme()
       end,
     },
 
@@ -32,6 +34,6 @@ require('lazy').setup {
     'cohama/lexima.vim',
     { import = 'plugins' },
   },
-  install = { colorscheme = { 'cobalt2' } },
-  checker = { enabled = true },
+  install = { colorscheme = { 'neon' } },
+  checker = { enabled = true, notify = false },
 }
