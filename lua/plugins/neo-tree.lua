@@ -18,6 +18,7 @@ return {
       filesystem = {
         window = {
           mappings = {
+            ['/'] = 'noop',
             ['\\'] = 'close_window',
             ['J'] = function(state)
               local tree = state.tree
