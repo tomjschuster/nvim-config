@@ -18,18 +18,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
   spec = {
-    --    require 'colors.cobalt2',
-    {
-      'rafamadriz/neon',
-      --      dir = '~/.local/share/nvim/lazy/neon/',
-      priority = 1000,
-      lazy = false,
-      config = function(neon, opts)
-        vim.g.neon_overrides = { SpecialChar = { fg = require('neon.colors').purple } }
-        require('neon').colorscheme()
-      end,
-    },
-
+    require 'colors.cobalt2',
     'NMAC427/guess-indent.nvim',
     'cohama/lexima.vim',
     { import = 'plugins' },

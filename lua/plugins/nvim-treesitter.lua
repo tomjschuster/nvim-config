@@ -10,10 +10,27 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter',
+    lazy = false,
+    priority = 1100,
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'elixir' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'elixir',
+        'javascript',
+        'typescript',
+      },
       auto_install = true,
       highlight = {
         enable = true,
@@ -21,6 +38,15 @@ return {
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
         additional_vim_regex_highlighting = { 'ruby' },
+      },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = '<C-n>',
+          node_incremental = '<C-n>',
+          scope_incremental = '<C-s>',
+          node_decremental = '<C-p>',
+        },
       },
       indent = { enable = true, disable = { 'ruby' } },
     },

@@ -14,6 +14,33 @@ vim.keymap.set('i', '<C-e>', '<End>', { desc = 'Go to the end of the line' })
 vim.keymap.set('n', 't', '<Cmd>vsplit | terminal<CR>', { desc = 'Terminal' })
 vim.keymap.set('n', '<S-T>', '<Cmd>split | terminal<CR>', { desc = 'Terminal (horizontal)' })
 
+vim.keymap.set('n', '<leader>d', function()
+  local ts = require 'nvim-treesitter.ts_utils'
+  local node = ts.get_node_at_cursor()
+  if node then
+    print('Node type: ' .. node:type())
+    print('Parent: ' .. (node:parent() and node:parent():type() or 'none'))
+  end
+end)
+vim.keymap.set('n', '<C-S-s>', function()
+  local ts_ok, ts_utils = pcall(require, 'nvim-treesitter.ts_utils')
+  if ts_ok then
+    local node = ts_utils.get_node_at_cursor()
+    if node then
+      print('Node type: ' .. node:type())
+
+      -- Get all captures at cursor
+      local bufnr = vim.api.nvim_get_current_buf()
+      local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+      local captures = vim.treesitter.get_captures_at_pos(bufnr, row - 1, col)
+      if #captures > 0 then
+        for _, capture in ipairs(captures) do
+          print('Capture: @' .. capture.capture)
+        end
+      end
+    end
+  end
+end, { desc = 'Debug syntax highlighting at cursor' })
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
