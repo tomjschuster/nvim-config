@@ -32,6 +32,13 @@ return {
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        elixir = {
+          'mix',
+          -- prioritize umbrella root
+          root = function(ctx)
+            return require('utils.fs').root_multi(ctx.dirname, { 'mix.exs', 'apps' })
+          end,
+        },
       },
     },
   },
