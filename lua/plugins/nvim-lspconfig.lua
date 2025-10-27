@@ -42,17 +42,20 @@ return {
       -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
       -- and elegantly composed help section, `:help lsp-vs-treesitter`
 
-      -- Use expert instead of elixirls
-      -- Prevent client from attaching to default elixirls server (might be a better way to do this)
-      vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('disable-elixirls', { clear = true }),
-        callback = function(args)
-          local client = vim.lsp.get_client_by_id(args.data.client_id)
-          if client and client.name == 'elixirls' then
-            vim.lsp.stop_client(client.id)
-          end
-        end,
-      })
+      -- Disable unwanted LSP servers by intercepting vim.lsp.start
+      -- These servers are auto-started by Neovim's FileType autocmd system
+      -- despite having local override configs in lsp/ with empty filetypes.
+      local disabled_lsp_servers = { 'elixirls', 'expert' }
+      
+      -- Intercept vim.lsp.start to block disabled servers at the source
+      local original_lsp_start = vim.lsp.start
+      vim.lsp.start = function(config, opts)
+        if config.name and vim.tbl_contains(disabled_lsp_servers, config.name) then
+          -- Silently block the start
+          return nil
+        end
+        return original_lsp_start(config, opts)
+      end
 
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
@@ -218,12 +221,6 @@ return {
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         ts_ls = {},
-        expert = {
-          cmd = { 'expert' },
-          --  completion = { autocomplete = false },
-          root_markers = { 'mix.exs', '.git' },
-          filetypes = { 'elixir', 'eelixir', 'heex' },
-        },
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -262,6 +259,11 @@ return {
         automatic_installation = false,
         handlers = {
           function(server_name)
+            -- Skip disabled servers
+            if vim.tbl_contains(disabled_lsp_servers, server_name) then
+              return
+            end
+            
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
