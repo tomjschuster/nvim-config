@@ -20,6 +20,7 @@ return {
           mappings = {
             ['/'] = 'noop',
             ['\\'] = 'close_window',
+            ['<C-f>'] = 'noop',  -- Disable to allow global FZF mapping
             ['J'] = function(state)
               local tree = state.tree
               local node = tree:get_node()
