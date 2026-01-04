@@ -10,6 +10,9 @@ vim.keymap.set('t', 'jk', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 vim.keymap.set('i', '<C-a>', '<Home>', { desc = 'Go to the beginning of the line' })
 vim.keymap.set('i', '<C-e>', '<End>', { desc = 'Go to the end of the line' })
 
+vim.keymap.set('n', 'H', '<Home>', { desc = 'Go to the beginning of the line' })
+vim.keymap.set('n', 'L', '<End>', { desc = 'Go to the end of the line' })
+
 -- NOTE: This won't work in all terminal emulators/tmux/etc.
 vim.keymap.set('n', 't', '<Cmd>vsplit | terminal<CR>', { desc = 'Terminal' })
 vim.keymap.set('n', '<S-T>', '<Cmd>split | terminal<CR>', { desc = 'Terminal (horizontal)' })
@@ -22,6 +25,7 @@ vim.keymap.set('n', '<leader>d', function()
     print('Parent: ' .. (node:parent() and node:parent():type() or 'none'))
   end
 end)
+
 vim.keymap.set('n', '<C-S-s>', function()
   local ts_ok, ts_utils = pcall(require, 'nvim-treesitter.ts_utils')
   if ts_ok then
