@@ -94,7 +94,7 @@ vim.schedule(function()
 end)
 
 vim.keymap.set('n', '<leader>cp', function()
-  vim.fn.setreg('+', vim.fn.expand '%:p')
+  vim.fn.setreg('+', vim.fn.expand '%:.')
 end, { noremap = true, silent = true, desc = 'Copy current buffer path' })
 
 vim.o.breakindent = true
