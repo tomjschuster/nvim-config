@@ -150,4 +150,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+vim.env.GPG_TTY = vim.fn.expand '$TTY'
+
 require 'config.lazy'
