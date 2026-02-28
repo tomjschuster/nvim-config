@@ -1,11 +1,11 @@
 -- Autoformat
 local function get_format_opts()
   local opts = { async = true, lsp_format = 'fallback' }
-  
+
   -- If in visual mode, format only the selection
   if vim.fn.mode() == 'v' or vim.fn.mode() == 'V' then
-    local start_line = vim.fn.line('v')
-    local end_line = vim.fn.line('.')
+    local start_line = vim.fn.line 'v'
+    local end_line = vim.fn.line '.'
     if start_line > end_line then
       start_line, end_line = end_line, start_line
     end
@@ -27,9 +27,9 @@ return {
             if err then
               vim.notify(tostring(err), vim.log.levels.ERROR)
             else
-              vim.cmd('echohl ConformSuccess')
-              vim.cmd('echom "✓ Formatted"')
-              vim.cmd('echohl None')
+              vim.cmd 'echohl ConformSuccess'
+              vim.cmd 'echom "✓ Formatted"'
+              vim.cmd 'echohl None'
             end
           end)
         end,
@@ -43,10 +43,10 @@ return {
             if err then
               vim.notify(tostring(err), vim.log.levels.ERROR)
             else
-              vim.cmd('write')
-              vim.cmd('echohl ConformSuccess')
-              vim.cmd('echom "✓ Formatted & Saved"')
-              vim.cmd('echohl None')
+              vim.cmd 'write'
+              vim.cmd 'echohl ConformSuccess'
+              vim.cmd 'echom "✓ Formatted & Saved"'
+              vim.cmd 'echohl None'
             end
           end)
         end,
@@ -57,7 +57,7 @@ return {
     config = function()
       -- Define custom highlight group for format success
       vim.api.nvim_set_hl(0, 'ConformSuccess', { fg = '#50fa7b', italic = true })
-      
+
       require('conform').setup {
         notify_on_error = false,
         format_on_save = function(bufnr)
@@ -97,6 +97,7 @@ return {
           },
         },
         formatters_by_ft = {
+          gleam = { 'gleam' },
           lua = { 'stylua' },
           elixir = { 'mix_umbrella' },
           heex = { 'mix_umbrella' },
