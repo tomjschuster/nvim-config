@@ -8,7 +8,17 @@ return {
       --  - va)  - [V]isually select [A]round [)]paren
       --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
       --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup { n_lines = 500 }
+      local ai = require 'mini.ai'
+
+      local gen_spec = ai.gen_spec
+      ai.setup {
+        n_lines = 500,
+        custom_textobjects = {
+          -- Integrate Tree-sitter queries for function and class
+          f = gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },
+          c = gen_spec.treesitter { a = '@class.outer', i = '@class.inner' },
+        },
+      }
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
@@ -32,8 +42,32 @@ return {
         return '%2l:%-2v'
       end
 
-      -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
+      local git = require 'mini.git'
+      git.setup {
+        -- Setting command to false prevents mini.git from creating :Git
+        job = {
+          command = false,
+        },
+      }
+
+      local diff = require 'mini.diff'
+
+      diff.setup {
+        view = {
+          -- Options: 'sign' (default) or 'number'
+          style = 'sign',
+          signs = { add = '▎', change = '▎', delete = '➤' },
+        },
+      }
+
+      vim.keymap.set('n', '<leader>gb', function()
+        git.show_range_history()
+      end, { desc = 'Git [b]lame (inline history)' })
+
+      -- Show Diff of current hunk in a popup
+      vim.keymap.set('n', '<leader>ghp', function()
+        diff.toggle_overlay()
+      end, { desc = 'Git [h]unk [p]eek (overlay)' })
     end,
   },
 }

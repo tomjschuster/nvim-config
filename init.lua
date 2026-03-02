@@ -99,6 +99,16 @@ end, { noremap = true, silent = true, desc = 'Copy current buffer path' })
 
 vim.o.breakindent = true
 vim.o.undofile = true
+vim.o.autoread = true
+
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+  group = vim.api.nvim_create_augroup('AutoRefresh', { clear = true }),
+  callback = function()
+    if vim.fn.mode() ~= 'c' then
+      vim.cmd 'checktime'
+    end
+  end,
+})
 
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.o.ignorecase = true
@@ -128,6 +138,7 @@ vim.o.scrolloff = 10
 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
 -- instead raise a dialog asking if you wish to save the current file(s)
 vim.o.confirm = true
+vim.o.exrc = true
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -147,6 +158,52 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
     vim.hl.on_yank()
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufLeave', 'VimLeavePre' }, {
+  pattern = '*',
+  callback = function(opts)
+    local buf = opts.buf
+    -- Only act on codecompanion chat buffers
+    if vim.bo[buf].filetype == 'codecompanion' then
+      -- e.g. in .nvim.lua: vim.g.codecompanion_chat_dir = "docs/ai_chats"
+      local save_dir = vim.g.codecompanion_chat_dir
+
+      if not save_dir then
+        return
+      end
+
+      if not vim.startswith(save_dir, '/') then
+        save_dir = vim.fn.getcwd() .. '/' .. save_dir
+      end
+
+      -- Ensure the directory exists
+      if vim.fn.isdirectory(save_dir) == 0 then
+        vim.fn.mkdir(save_dir, 'p')
+      end
+
+      -- 1. Check if we already assigned a file path to this specific buffer
+      local ok, save_path = pcall(vim.api.nvim_buf_get_var, buf, 'chat_save_path')
+
+      -- 2. If not, generate one and save it as a buffer-local variable
+      if not ok or save_path == nil then
+        local timestamp = os.date '%Y-%m-%d_%H-%M-%S'
+        -- Optional: You could parse line 1 to get a title, but timestamp is safer
+        save_path = string.format('%s/chat_%s.md', save_dir, timestamp)
+        vim.api.nvim_buf_set_var(buf, 'chat_save_path', save_path)
+      end
+
+      -- 3. Grab the current state of the buffer (including any modifications you made)
+      local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+
+      -- 4. Overwrite the file with the current state
+      local file = io.open(save_path, 'w')
+      if file then
+        file:write(table.concat(lines, '\n'))
+        file:close()
+      end
+    end
   end,
 })
 
