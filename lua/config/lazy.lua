@@ -18,7 +18,6 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
   spec = {
-    require 'colors.cobalt2',
     'NMAC427/guess-indent.nvim',
     'cohama/lexima.vim',
     { import = 'plugins' },

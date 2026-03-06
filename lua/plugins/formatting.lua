@@ -100,6 +100,10 @@ return {
           lua = { 'stylua' },
           elixir = { 'mix_umbrella' },
           heex = { 'mix_umbrella' },
+          javascript = { 'prettierd', 'prettier', stop_after_first = true },
+          typescript = { 'prettierd', 'prettier', stop_after_first = true },
+          html = { 'prettierd', 'prettier', stop_after_first = true },
+          css = { 'prettierd', 'prettier', stop_after_first = true },
         },
       }
     end,

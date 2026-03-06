@@ -207,6 +207,16 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'VimLeavePre' }, {
   end,
 })
 
+-- markdown code yanking doesn't work without this
+vim.filetype.add {
+  extension = {
+    codecompanion = 'markdown',
+  },
+  pattern = {
+    ['codecompanion.*'] = 'markdown',
+  },
+}
+
 vim.env.GPG_TTY = vim.fn.expand '$TTY'
 
 vim.opt.foldmethod = 'expr'

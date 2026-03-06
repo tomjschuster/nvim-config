@@ -25,6 +25,7 @@ return {
         'elixir',
         'javascript',
         'typescript',
+        'tsx',
         'json',
         'jsonc',
       },

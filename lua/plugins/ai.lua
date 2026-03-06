@@ -5,7 +5,11 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
-       "j-hui/fidget.nvim",
+      {
+        'MeanderingProgrammer/render-markdown.nvim',
+        ft = { 'markdown', 'codecompanion' },
+      },
+      'j-hui/fidget.nvim',
       'lalitmee/codecompanion-spinners.nvim',
     },
     opts = {
@@ -16,6 +20,12 @@ return {
         inline = {
           adapter = 'anthropic',
           model = 'claude-3-5-haiku-latest', -- Use the fast/cheap model for inline
+        },
+      },
+      display = {
+        diff = {
+          enabled = true,
+          provider = 'mini_diff',
         },
       },
       extensions = {
