@@ -27,16 +27,9 @@ return {
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
 
-      -- Simple and easy statusline.
-      --  You could remove this setup call if you don't like it,
-      --  and try some other statusline plugin
       local statusline = require 'mini.statusline'
-      -- set use_icons to true if you have a Nerd Font
       statusline.setup { use_icons = vim.g.have_nerd_font }
 
-      -- You can configure sections in the statusline by overriding their
-      -- default behavior. For example, here we set the section for
-      -- cursor location to LINE:COLUMN
       ---@diagnostic disable-next-line: duplicate-set-field
       statusline.section_location = function()
         return '%2l:%-2v'
@@ -44,7 +37,7 @@ return {
 
       local git = require 'mini.git'
       git.setup {
-        -- Setting command to false prevents mini.git from creating :Git
+        -- use :Git from fugitive
         job = {
           command = false,
         },
@@ -54,7 +47,6 @@ return {
 
       diff.setup {
         view = {
-          -- Options: 'sign' (default) or 'number'
           style = 'sign',
           signs = { add = '▎', change = '▎', delete = '➤' },
         },
@@ -64,7 +56,6 @@ return {
         git.show_range_history()
       end, { desc = 'Git [b]lame (inline history)' })
 
-      -- Show Diff of current hunk in a popup
       vim.keymap.set('n', '<leader>ghp', function()
         diff.toggle_overlay()
       end, { desc = 'Git [h]unk [p]eek (overlay)' })

@@ -1,4 +1,3 @@
--- Autoformat
 local function get_format_opts()
   local opts = { async = true, lsp_format = 'fallback' }
 

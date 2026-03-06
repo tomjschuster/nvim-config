@@ -21,14 +21,14 @@ return {
             ['/'] = 'noop',
             ['\\'] = 'close_window',
             ['<C-f>'] = 'noop', -- Disable to allow global FZF mapping
-            ['J'] = function(state)
+            ['J'] = function(state) -- jump to bottom of folder
               local tree = state.tree
               local node = tree:get_node()
               local siblings = tree:get_nodes(node:get_parent_id())
               local renderer = require 'neo-tree.ui.renderer'
               renderer.focus_node(state, siblings[#siblings]:get_id())
             end,
-            ['K'] = function(state)
+            ['K'] = function(state) -- jump top of folder
               local tree = state.tree
               local node = tree:get_node()
               local siblings = tree:get_nodes(node:get_parent_id())
