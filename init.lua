@@ -152,4 +152,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 vim.env.GPG_TTY = vim.fn.expand '$TTY'
 
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.opt.foldlevel = 99 -- Prevents files from opening with all folds closed
+
 require 'config.lazy'

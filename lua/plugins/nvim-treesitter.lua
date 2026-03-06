@@ -30,6 +30,8 @@ return {
         'elixir',
         'javascript',
         'typescript',
+        'json',
+        'jsonc',
       },
       auto_install = true,
       highlight = {
