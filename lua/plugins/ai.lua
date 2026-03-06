@@ -13,13 +13,71 @@ return {
       'lalitmee/codecompanion-spinners.nvim',
     },
     opts = {
+      adapters = {
+        http = {
+          bedrock = function()
+            local orig_form_messages = require('codecompanion.adapters.http.anthropic').handlers.form_messages
+
+            return require('codecompanion.adapters').extend('anthropic', {
+              url = 'https://bedrock-runtime.${aws_region}.amazonaws.com/model/${model}/invoke',
+              env = {
+                api_key = function()
+                  return ''
+                end,
+                model = 'schema.model.default',
+                aws_region = 'AWS_REGION',
+                bearer_token = 'AWS_BEARER_TOKEN_BEDROCK',
+              },
+              headers = {
+                ['content-type'] = 'application/json',
+                ['anthropic-version'] = '2023-06-01',
+                ['x-api-key'] = '',
+                ['Authorization'] = 'Bearer ${bearer_token}',
+              },
+              opts = {
+                stream = false,
+              },
+              handlers = {
+                setup = function(self)
+                  -- Bedrock doesn't accept 'model' or 'stream' in the body
+                  self.parameters = self.parameters or {}
+                  self.parameters.model = nil
+                  self.parameters.stream = nil
+                  return true
+                end,
+                -- Wrap form_messages to adapt for Bedrock
+                form_messages = function(self, messages)
+                  local result = orig_form_messages(self, messages)
+                  result.cache_control = nil
+                  result.anthropic_version = 'bedrock-2023-05-31'
+                  return result
+                end,
+              },
+              schema = {
+                model = {
+                  order = 1,
+                  mapping = 'parameters',
+                  type = 'enum',
+                  desc = 'Bedrock model ID',
+                  default = 'us.anthropic.claude-sonnet-4-6',
+                  choices = {
+                    'us.anthropic.claude-sonnet-4-6',
+                    'us.anthropic.claude-haiku-4-5-20251001-v1:0',
+                    'us.anthropic.claude-opus-4-6-v1',
+                  },
+                },
+              },
+            })
+          end,
+        },
+      },
       interactions = {
         chat = {
-          adapter = 'gemini_cli',
+          adapter = 'claude_code',
+          --  adapter = 'gemini_cli',
         },
         inline = {
-          adapter = 'anthropic',
-          model = 'claude-3-5-haiku-latest', -- Use the fast/cheap model for inline
+          adapter = 'bedrock',
         },
       },
       display = {
@@ -30,7 +88,9 @@ return {
       },
       extensions = {
         spinner = {
-          style = 'fidget',
+          opts = {
+            style = 'fidget',
+          },
         },
       },
     },
