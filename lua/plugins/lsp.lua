@@ -12,8 +12,27 @@ return {
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       -- servers managed by Mason
+
+      -- servers managed by Mason
       local servers = {
-        ts_ls = {},
+        -- JS/TS (vtsls is faster and smarter than ts_ls)
+        vtsls = {
+          settings = {
+            typescript = {
+              inlayHints = {
+                parameterNames = { enabled = 'literals' },
+                variableTypes = { enabled = true },
+              },
+            },
+          },
+        },
+        html = {},
+        cssls = {},
+        -- Emmet (Crucial for HTML/CSS speed)
+        emmet_ls = {
+          filetypes = { 'html', 'typescriptreact', 'javascriptreact', 'css', 'sass', 'scss', 'less', 'eruby' },
+        },
+        jsonls = {},
         lua_ls = {
           settings = {
             Lua = {
@@ -109,8 +128,13 @@ return {
 
       -- 5. Mason & Tool Installation
       -- We explicitly list tools Mason should handle. (No Gleam here!)
+
       local ensure_installed = vim.tbl_keys(servers)
-      vim.list_extend(ensure_installed, { 'stylua' })
+      vim.list_extend(ensure_installed, {
+        'stylua',
+        'prettierd', -- Faster Prettier
+        'eslint_d', -- Faster ESLint
+      })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -120,11 +144,12 @@ return {
             local server_opts = servers[server_name] or {}
             server_opts.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server_opts.capabilities or {})
 
+            require('lspconfig')[server_name].setup(server_opts)
             -- Use the specific server setup to avoid global index warnings
-            local configs = require 'lspconfig.configs'
-            if configs[server_name] then
-              configs[server_name].setup(server_opts)
-            end
+            --local configs = require 'lspconfig.configs'
+            --if configs[server_name] then
+            --  configs[server_name].setup(server_opts)
+            --end
           end,
         },
       }
