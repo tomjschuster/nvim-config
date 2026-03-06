@@ -1,11 +1,12 @@
 return {
   {
     'olimorris/codecompanion.nvim',
-    version = '^19.0.0',
+    version = '^19.2.0',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
-      'franco-ruggeri/codecompanion-spinner.nvim',
+       "j-hui/fidget.nvim",
+      'lalitmee/codecompanion-spinners.nvim',
     },
     opts = {
       interactions = {
@@ -17,20 +18,10 @@ return {
           model = 'claude-3-5-haiku-latest', -- Use the fast/cheap model for inline
         },
       },
-      display = {
-        action_notification = true,
-        diff = {
-          enabled = true,
-          provider = 'mini_diff',
-          layout = 'vertical',
-          word_highlights = {
-            additions = true,
-            deletions = true,
-          },
-        },
-      },
       extensions = {
-        spinner = {},
+        spinner = {
+          style = 'fidget',
+        },
       },
     },
     keys = {

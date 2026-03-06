@@ -9,10 +9,8 @@ return {
       'saghen/blink.cmp',
     },
     config = function()
-      -- 1. Setup Capabilities (Blink)
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
-      -- 2. Define Servers
       -- servers managed by Mason
       local servers = {
         ts_ls = {},
