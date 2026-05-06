@@ -1,5 +1,13 @@
 return {
   {
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    opts = {
+      check_ts = true, -- use treesitter to check for pairs
+      enable_check_bracket_line = true, -- don't close if already a close bracket on line
+    },
+  },
+  {
     'saghen/blink.cmp',
     event = 'VimEnter',
     version = '1.*',
