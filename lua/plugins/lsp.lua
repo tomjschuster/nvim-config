@@ -12,8 +12,6 @@ return {
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       -- servers managed by Mason
-
-      -- servers managed by Mason
       local servers = {
         -- JS/TS (vtsls is faster and smarter than ts_ls)
         vtsls = {
@@ -138,21 +136,32 @@ return {
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+      -- Servers to disable (using alternatives: vtsls for TS, expert for Elixir)
+      local disabled_servers = { 'ts_ls', 'elixirls' }
+
       require('mason-lspconfig').setup {
         handlers = {
+          -- Prevent mason-lspconfig from calling setup() on disabled servers
+          ts_ls = function() end,
+          elixirls = function() end,
           function(server_name)
             local server_opts = servers[server_name] or {}
             server_opts.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server_opts.capabilities or {})
 
             require('lspconfig')[server_name].setup(server_opts)
-            -- Use the specific server setup to avoid global index warnings
-            --local configs = require 'lspconfig.configs'
-            --if configs[server_name] then
-            --  configs[server_name].setup(server_opts)
-            --end
           end,
         },
       }
+
+      -- Defer disable to override any auto-enabled configs from nvim-lspconfig's lsp/*.lua
+      vim.api.nvim_create_autocmd('VimEnter', {
+        once = true,
+        callback = function()
+          for _, name in ipairs(disabled_servers) do
+            vim.lsp.enable(name, false)
+          end
+        end,
+      })
     end,
   },
 }
