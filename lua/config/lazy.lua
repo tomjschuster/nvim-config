@@ -19,7 +19,6 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup {
   spec = {
     'NMAC427/guess-indent.nvim',
-    'cohama/lexima.vim',
     { import = 'plugins' },
   },
   install = { colorscheme = { 'neon' } },
