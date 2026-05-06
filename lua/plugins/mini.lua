@@ -35,30 +35,30 @@ return {
         return '%2l:%-2v'
       end
 
-      local git = require 'mini.git'
-      git.setup {
-        -- use :Git from fugitive
-        job = {
-          command = false,
-        },
-      }
-
-      local diff = require 'mini.diff'
-
-      diff.setup {
-        view = {
-          style = 'sign',
-          signs = { add = '▎', change = '▎', delete = '➤' },
-        },
-      }
-
-      vim.keymap.set('n', '<leader>gb', function()
-        git.show_range_history()
-      end, { desc = 'Git [b]lame (inline history)' })
-
-      vim.keymap.set('n', '<leader>ghp', function()
-        diff.toggle_overlay()
-      end, { desc = 'Git [h]unk [p]eek (overlay)' })
+      --      local git = require 'mini.git'
+      --      git.setup {
+      --        -- use :Git from fugitive
+      --        job = {
+      --          command = false,
+      --        },
+      --      }
+      --
+      --      local diff = require 'mini.diff'
+      --
+      --      diff.setup {
+      --        view = {
+      --          style = 'sign',
+      --          signs = { add = '▎', change = '▎', delete = '➤' },
+      --        },
+      --      }
+      --
+      --      vim.keymap.set('n', '<leader>gb', function()
+      --        git.show_range_history()
+      --      end, { desc = 'Git [b]lame (inline history)' })
+      --
+      --      vim.keymap.set('n', '<leader>ghp', function()
+      --        diff.toggle_overlay()
+      --      end, { desc = 'Git [h]unk [p]eek (overlay)' })
     end,
   },
 }
