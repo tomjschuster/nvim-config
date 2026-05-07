@@ -13,27 +13,6 @@ return {
       'lalitmee/codecompanion-spinners.nvim',
     },
     opts = {
-      adapters = {
-        http = {
-          claude_proxy = function()
-            return require('codecompanion.adapters').extend('anthropic', {
-              url = 'http://127.0.0.1:8082/v1/messages',
-              env = {
-                api_key = function()
-                  return 'local-proxy'
-                end,
-              },
-              headers = {
-                ['content-type'] = 'application/json',
-                ['anthropic-version'] = '2023-06-01',
-              },
-              opts = {
-                stream = false,
-              },
-            })
-          end,
-        },
-      },
       interactions = {
         chat = {
           adapter = 'claude_code',
