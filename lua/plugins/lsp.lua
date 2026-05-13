@@ -11,6 +11,12 @@ return {
     config = function()
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
+      local expert_settings = {}
+      local elixir = vim.fn.exepath 'elixir'
+      if elixir ~= '' then
+        expert_settings.elixirSourcePath = vim.fn.fnamemodify(elixir, ':h:h')
+      end
+
       -- servers managed by Mason
       local servers = {
         -- JS/TS (vtsls is faster and smarter than ts_ls)
@@ -48,6 +54,18 @@ return {
           capabilities = capabilities,
         })
         vim.lsp.enable 'gleam'
+      end
+
+      if vim.fn.executable(vim.fn.expand '~/.local/bin/expert') == 1 then
+        vim.lsp.config('expert', {
+          cmd = { vim.fn.expand '~/.local/bin/expert', '--stdio' },
+          settings = expert_settings,
+          --        settings = {
+          --          elixirSourcePath = '/Users/tschuster/.local/share/mise/installs/elixir/1.19.5-otp-28',
+          --        },
+          capabilities = capabilities,
+        })
+        vim.lsp.enable 'expert'
       end
 
       -- 3. Diagnostic & UI Config
