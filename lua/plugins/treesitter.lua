@@ -1,12 +1,13 @@
 return {
   {
     'nvim-treesitter/nvim-treesitter',
+    branch = 'master',
     lazy = false,
     priority = 1100,
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs',
     dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
+      { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'master' },
     },
     opts = {
       ensure_installed = {
